@@ -1,11 +1,10 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { FavoritesList } from '@src/views';
 
-export default function Favorites() {
+export default function FavoriteCard() {
   return (
     <View>
-      <FavoritesList />
+      <Text>FavoriteCard</Text>
     </View>
   );
 }

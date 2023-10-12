@@ -23,12 +23,12 @@ function TabMenu() {
         tabBarShowLabel: false
       })}>
       <Tab.Screen
-        options={{ title: 'Home Page', headerShown: true }}
+        options={{ title: 'Home Page', headerShown: false }}
         name="HomeTab"
         component={Home}
       />
       <Tab.Screen
-        options={{ title: 'Favorites', headerShown: true }}
+        options={{ title: 'Favorites', headerShown: false }}
         name="Favorites"
         component={Favorites}
       />
