@@ -1,16 +1,35 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity
+} from 'react-native';
+import React, { useState } from 'react';
+import { favAddAction } from '@src/redux/actions/favorites/favoritesAction';
+import { useDispatch } from 'react-redux';
 
 export default function ListCard({ item }) {
+  const dispatch = useDispatch();
+
+  const addFav = () => {
+    dispatch(favAddAction(item));
+  };
+
   return (
-    <ImageBackground
-      style={styles.contain}
-      source={{ uri: item?.photo }}
-      resizeMode="cover">
-      <View style={styles.bottom}>
-        <Text style={styles.title}>{item?.name}</Text>
-      </View>
-    </ImageBackground>
+    <TouchableOpacity
+      onPress={() => {
+        addFav();
+      }}>
+      <ImageBackground
+        style={styles.contain}
+        source={{ uri: item?.photo }}
+        resizeMode="cover">
+        <View style={styles.bottom}>
+          <Text style={styles.title}>{item?.name}</Text>
+        </View>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 }
 
