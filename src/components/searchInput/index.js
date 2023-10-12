@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 
-export default SearchInput = ({ onChangeText, value }) => {
+export default SearchInput = ({ onChangeText, value, setSearchKey }) => {
   const [keyboardStatus, setKeyboardStatus] = useState('');
   const inputWidth = useRef(new Animated.Value(200)).current;
 

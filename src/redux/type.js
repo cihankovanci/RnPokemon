@@ -1,0 +1,1 @@
+export const GET_CONTENT_DATA = 'GET_CONTENT_DATA';
