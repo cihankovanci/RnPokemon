@@ -7,6 +7,10 @@ export default function Container({ children }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12
+    padding: 12,
+    flex:1,
+
+
+
   }
 });

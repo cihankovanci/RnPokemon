@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     width: 160,
     position: 'relative',
     marginBottom: 20,
-    marginHorizontal: 10 // duzenlenecek
+    marginHorizontal: 10,
+
   },
   bottom: {
     backgroundColor: '#00000080',

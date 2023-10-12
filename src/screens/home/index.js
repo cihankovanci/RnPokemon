@@ -4,10 +4,10 @@ import { Container, Header } from '@src/components';
 import SearchInput from '@src/components/searchInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContentAction } from '@src/redux/actions/content/contentAction';
-import { ContentList } from '@src/views';
+import { ContentList, HistorySearchList } from '@src/views';
 
 export default function Home() {
-  const [searchKey, setSearchKey] = React.useState('');
+  const [searchKey, setSearchKey] = React.useState(' ');
   const dispatch = useDispatch();
   const { contentData } = useSelector((state) => state.content);
 
@@ -15,7 +15,9 @@ export default function Home() {
     const params = {
       q: searchKey
     };
-    dispatch(getContentAction(params));
+    if (searchKey?.length > 0) {
+      dispatch(getContentAction(params));
+    }
   }, [searchKey]);
 
   return (
@@ -23,9 +25,12 @@ export default function Home() {
       <Header />
       <Container>
         <View style={styles.search_area}>
-          <SearchInput onChangeText={setSearchKey} value={searchKey} />
+          <SearchInput setSearchKey={setSearchKey} searchKey={searchKey} />
         </View>
-        {contentData?.length > 0 && <ContentList data={contentData} />}
+        <HistorySearchList />
+        <View style={{flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
+        {contentData?.length > 0 ? <ContentList data={contentData} /> : <Text>Please enter a search term to find a Pokemon.</Text>} 
+        </View>
       </Container>
     </View>
   );
@@ -35,7 +40,6 @@ const styles = StyleSheet.create({
   search_area: {
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 60
+    alignItems:'center'
   }
 });

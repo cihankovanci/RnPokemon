@@ -5,13 +5,20 @@ import {
   View,
   TouchableWithoutFeedback,
   Image,
-  Keyboard
+  Keyboard,
+  StyleSheet
 } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
+import { historyAddAction } from '@src/redux/actions/historySearch/historySearchAction';
+import { useDispatch } from 'react-redux';
+import { SearchIcon } from '@src/constants/icons';
 
-export default SearchInput = ({ onChangeText, value, setSearchKey }) => {
+export default SearchInput = ({ setSearchKey }) => {
+  const [currentText, setCurrentText] = useState('');
   const [keyboardStatus, setKeyboardStatus] = useState('');
   const inputWidth = useRef(new Animated.Value(200)).current;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -29,60 +36,68 @@ export default SearchInput = ({ onChangeText, value, setSearchKey }) => {
         duration: 400,
         useNativeDriver: false
       }).start();
+
+      const data = {
+        key: currentText
+      };
+      if (currentText !== '') {
+        dispatch(historyAddAction(data));
+      }
     });
 
     return () => {
       showSubscription.remove();
       hideSubscription.remove();
     };
-  }, []);
+  }, [currentText]);
 
   return (
-    <TouchableWithoutFeedback
-      style={{ backgroundColor: 'green' }}
-      onPress={() => Keyboard.dismiss()}>
-      <View style={{ flex: 1, marginTop: 40 }}>
-        <Animated.View
-          style={{
-            width: inputWidth,
-            height: 40,
-            flexDirection: 'row',
-            borderWidth: keyboardStatus === 'Keyboard Shown' ? 1 : 0,
-            borderColor: 'red',
-            borderRadius: 6,
-            overflow: 'hidden'
-          }}>
-          <View
-            style={{
-              backgroundColor: 'white',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingHorizontal: 6
-            }}>
-            {/* <Image
-              style={{ width: 15, height: 15 }}
-              resizeMode="contain"
-              source={require('../../../assets/icons/searchIcon.png')}
-            /> */}
-          </View>
-          <TextInput
-            onBlur={() => Keyboard.dismiss()}
-            placeholder="Search"
-            style={{
-              flex: 1,
-              paddingVertical: 8,
-              paddingHorizontal: 6,
-              backgroundColor: 'white',
-
-              fontSize: 16
-            }}
-            onSubmitEditing={Keyboard.dismiss}
-            autoCapitalize="none"
-            onChangeText={onChangeText}
-            value={value}
-          />
-        </Animated.View>
-      </View>
-    </TouchableWithoutFeedback>
+    <View style={styles.container}>
+      <Animated.View
+        style={{
+          width: inputWidth,
+          height: 40,
+          flexDirection: 'row',
+          borderWidth: keyboardStatus === 'Keyboard Shown' ? 1 : 0,
+          borderColor: 'red',
+          borderRadius: 6,
+          overflow: 'hidden'
+        }}>
+        <View style={styles.iconContainer}>
+          <SearchIcon />
+        </View>
+        <TextInput
+          onBlur={() => Keyboard.dismiss()}
+          placeholder="Search"
+          style={styles.textInputStyle}
+          onSubmitEditing={Keyboard.dismiss}
+          autoCapitalize="none"
+          onChangeText={(value) => {
+            setSearchKey(value), setCurrentText(value);
+          }}
+        />
+      </Animated.View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 40,
+    marginBottom: 60
+  },
+  iconContainer: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 10
+  },
+  textInputStyle: {
+    flex: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 6,
+    backgroundColor: 'white',
+    fontSize: 16
+  }
+});

@@ -7,7 +7,7 @@ import rootReducer from '@src/redux/reducers/index';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['favoriteItems']
+  whitelist: ['favoriteItems', 'historySearch']
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = createStore(persistedReducer, applyMiddleware(thunk));
